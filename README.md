@@ -35,7 +35,7 @@
 
 | Source | Contents | Link |
 |---|---|---|
-| Formula 1 World Championship (1950–2024) | races, results, qualifying, lap times, pit stops, standings, drivers, constructors, circuits | [TODO_KAGGLE_LINK_1](https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020) |
-| F1 business & constructor finances (2010–2026) | revenue structure, team budgets, sponsorship, prize money, cost-cap limits, audience figures | [TODO_KAGGLE_LINK_2](https://www.kaggle.com/datasets/sergionefedov/formula-1-racing-industry-2010-2026) |
+| Formula 1 World Championship (1950–2024) | races, results, qualifying, lap times, pit stops, standings, drivers, constructors, circuits | [KAGGLE_LINK_1](https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020) |
+| F1 business & constructor finances (2010–2026) | revenue structure, team budgets, sponsorship, prize money, cost-cap limits, audience figures | [KAGGLE_LINK_2](https://www.kaggle.com/datasets/sergionefedov/formula-1-racing-industry-2010-2026) |
 
 The raw CSV files are **not** committed to this repository — download them from the links above and point the Power Query sources at your local folder.
