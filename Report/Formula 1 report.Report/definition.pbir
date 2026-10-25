@@ -1,0 +1,8 @@
+{
+  "version": "4.0",
+  "datasetReference": {
+    "byPath": {
+      "path": "../Formula 1 report.SemanticModel"
+    }
+  }
+}

@@ -1,0 +1,163 @@
+table 'My Measures'
+	lineageTag: 28a51136-f951-478b-a92f-347a5102d2eb
+
+	measure Seasons = DISTINCTCOUNT(races[year])
+		formatString: 0
+		lineageTag: 7cad496d-c20c-4b93-9a24-0b7f331431b8
+
+	measure 'Races Held' = COUNTROWS(races)
+		formatString: 0
+		lineageTag: 92dfca25-c2da-4ea8-aac4-dddefc417b32
+
+	measure 'Drivers Count' = DISTINCTCOUNT(results[driverId])
+		formatString: 0
+		lineageTag: f27a6b10-f91e-4e66-aa08-8d42d0c8f230
+
+	measure 'Constructors Count' = DISTINCTCOUNT(results[constructorId])
+		formatString: 0
+		lineageTag: 4700d0c8-08e9-4466-ba39-09724a564421
+
+	measure 'Countries Count' = DISTINCTCOUNT(circuits[country])
+		formatString: 0
+		lineageTag: 04b88d9d-4867-4353-bf6d-f6162f998828
+
+	measure 'F1 Revenue' = SUM(f1_business[total_revenue_usd_m])
+		formatString: 0
+		lineageTag: aea7c519-520b-4f6b-a5d1-9ddff3d58880
+
+	measure 'Titles Won' =
+			
+			CALCULATE(
+			    COUNTROWS( final_standings),
+			    final_standings[position] = 1
+			)
+		formatString: 0
+		lineageTag: 184d7e5a-6f04-4b3b-a40e-a085a9021b35
+
+	measure 'US Viewers Baseline 2018' =
+			
+			CALCULATE(
+			    AVERAGE( f1_business[us_avg_race_viewers_m] ),
+			    REMOVEFILTERS( f1_business ),
+			    f1_business[season] = 2018
+			)
+		lineageTag: d6a634f6-7607-4f32-bfe8-e07077b34dd1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Final Position' = MIN( final_standings[position] )
+		formatString: 0
+		lineageTag: 1604a20b-b4b2-42ad-9b01-631c11c08948
+
+	measure 'Season Points' = SUM( final_standings[points] )
+		formatString: 0
+		lineageTag: 6e6c3380-7eda-434d-a8ac-9d899137e2d6
+		dataCategory: Uncategorized
+
+	measure 'Points Share' =
+			
+			DIVIDE(
+			    [Season Points],
+			    CALCULATE( [Season Points], REMOVEFILTERS( constructors ) )
+			)
+		lineageTag: 94abf57c-ba32-4065-b134-98c4cdcd826e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Race Wins' = CALCULATE( COUNTROWS( results ), results[positionOrder] = 1 )
+		formatString: 0
+		lineageTag: a8d550b1-49c6-47d2-9879-656f62fa7446
+
+	measure 'Races in Season' = COUNTROWS( races )
+		formatString: 0
+		lineageTag: 7cfcb90b-6926-4651-b0fd-87efe61d9046
+
+	measure 'Win Share' = DIVIDE( [Race Wins], [Races in Season] ) + 0
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 76369a93-8270-448d-9632-f418d734661f
+
+	measure 'Races Entered' = COUNTROWS( results )
+		formatString: 0
+		lineageTag: 8b421655-ab7b-4f5f-9c4e-5fcc19ae502d
+
+	measure Wins = CALCULATE( COUNTROWS( results ), results[positionOrder] = 1 )
+		formatString: 0
+		lineageTag: 61827666-92d4-429f-9d4e-a217b723877c
+
+	measure Podiums = CALCULATE( COUNTROWS( results ), results[positionOrder] <= 3 )
+		formatString: 0
+		lineageTag: f086c506-dec2-452d-9a3b-5dc69cf5fe5a
+
+	measure Poles = CALCULATE( COUNTROWS( results ), results[grid] = 1 )
+		formatString: 0
+		lineageTag: f655eac5-fbd8-4b06-b19a-3df18e1d7d87
+
+	measure 'Career Points' = SUM( results[points] )
+		formatString: 0
+		lineageTag: 9ec66d0e-ad8a-41ab-95fd-78258987e5df
+
+	measure DNFs = CALCULATE( COUNTROWS( results ), results[positionText] = "R" )
+		formatString: 0
+		lineageTag: 5756ca8d-0c28-47f6-b533-a1e4a66e8bbc
+
+	measure 'DNF Rate' = DIVIDE( [DNFs], [Races Entered] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f4a97d19-efdf-42b0-b4fe-687719cd55d5
+
+	measure 'Avg Grid' = CALCULATE( AVERAGE( results[grid] ), results[grid] > 0 )
+		lineageTag: 8a982cd7-bc4e-4244-aa7b-f99321e65277
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Finish' = AVERAGE( results[positionOrder] )
+		lineageTag: 96553a71-0a3d-4e7c-90e8-c373f12dda23
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Positions Gained' = [Avg Grid] - [Avg Finish]
+		lineageTag: 0a22f7bc-d2ac-4151-89e0-d628f045dceb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Championship Position' = MIN( driver_final_standings[position] )
+		formatString: 0
+		lineageTag: 105618ba-72de-4d92-994e-cf8594b6cc0d
+
+	measure 'Debut Age' =
+			
+			VAR DOB = MAX( drivers[dob] )
+			VAR FirstRace = MINX( results, RELATED( races[date] ) )
+			RETURN
+			    INT( YEARFRAC( DOB, FirstRace, 1 ) )
+		formatString: 0
+		lineageTag: 254c3b39-05a1-4e08-9333-bf83f22d243f
+
+	measure 'Last Season' = MAX( races[year] )
+		formatString: 0
+		lineageTag: ae63b741-bf92-4c22-9300-f6999c3e58bd
+
+	measure 'Teams Driven' =
+			
+			VAR TeamsWithYear =
+			    ADDCOLUMNS(
+			        SUMMARIZE( results, constructors[name] ),
+			        "@First", CALCULATE( MINX( results, RELATED( races[year] ) ) )
+			    )
+			RETURN
+			    CONCATENATEX( TeamsWithYear, constructors[name], ", ", [@First], ASC )
+		lineageTag: b8079f0b-be71-4094-a052-bc4ef68dffb6
+
+	column Value
+		lineageTag: 0333d7ef-4ea2-40a4-a6d8-c32889171f6d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'My Measures' = calculated
+		mode: import
+		source = { " My Measures" }
+
+	annotation PBI_Id = 542317693ff040c29fc4e333b28817f1
+

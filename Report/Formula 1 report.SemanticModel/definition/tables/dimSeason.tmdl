@@ -1,0 +1,30 @@
+table dimSeason
+	lineageTag: 4f2dc565-e01a-4a08-b139-4d8e0a815d32
+
+	column Year
+		formatString: 0
+		lineageTag: 7099bbfb-19c8-4c7a-9314-3b0a286908b1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = User
+
+	column Decade = INT( dimSeason[Year] / 10 ) * 10
+		formatString: 0
+		lineageTag: d4c6f62e-743d-4533-8059-8266a025f2da
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dimSeason = calculated
+		mode: import
+		source =
+				
+				SELECTCOLUMNS(
+				    GENERATESERIES( 1950, 2026, 1 ),
+				    "Year", [Value]
+				)
+
+	annotation PBI_Id = 7506b962b12c401584a689d86efdd8de
+

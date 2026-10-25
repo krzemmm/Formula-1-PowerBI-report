@@ -1,0 +1,51 @@
+table constructors
+	lineageTag: 15c7b9c6-9716-49fa-b6f9-85bc02e6a3b8
+
+	column constructorId
+		dataType: int64
+		formatString: 0
+		lineageTag: 0bc26c4a-d69b-4339-a1d1-f41c8950ef31
+		summarizeBy: none
+		sourceColumn: constructorId
+
+		annotation SummarizationSetBy = Automatic
+
+	column constructorRef
+		dataType: string
+		lineageTag: 618415d8-02bf-4c3d-a528-7e114d4888a5
+		summarizeBy: none
+		sourceColumn: constructorRef
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 658d64c1-edce-4508-8ae2-0b574d0a1eae
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column nationality
+		dataType: string
+		lineageTag: 55c1fc1f-50f5-4e64-adb5-b3909919ebe9
+		summarizeBy: none
+		sourceColumn: nationality
+
+		annotation SummarizationSetBy = Automatic
+
+	partition constructors = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\constructors.csv"),[Delimiter=",", Columns=5, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"constructorId", Int64.Type}, {"constructorRef", type text}, {"name", type text}, {"nationality", type text}, {"url", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"url"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,88 @@
+table circuits
+	lineageTag: 81cca2d0-40ea-47de-82eb-a326cf80503d
+
+	column circuitId
+		dataType: int64
+		formatString: 0
+		lineageTag: 61211e3e-01bd-41c3-9f16-2562d71e0eb1
+		summarizeBy: none
+		sourceColumn: circuitId
+
+		annotation SummarizationSetBy = Automatic
+
+	column circuitRef
+		dataType: string
+		lineageTag: c7b51bfc-a84c-4eee-ad9f-c4d2405d8261
+		summarizeBy: none
+		sourceColumn: circuitRef
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 5dc7cec8-eb4e-41e0-99e4-9beb6f8890c5
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column location
+		dataType: string
+		lineageTag: e7a999d9-1e6c-41ae-a074-a29453f6b2ea
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: location
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: 4b977777-26c1-425a-8cdf-ee620ae860f5
+		dataCategory: Country
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column lat
+		dataType: string
+		lineageTag: a49c594d-cadc-441b-97c3-89392c2965ab
+		dataCategory: Latitude
+		summarizeBy: none
+		sourceColumn: lat
+
+		annotation SummarizationSetBy = Automatic
+
+	column lng
+		dataType: string
+		lineageTag: 083870d1-b164-4d64-8933-b11f44a5df78
+		dataCategory: Longitude
+		summarizeBy: none
+		sourceColumn: lng
+
+		annotation SummarizationSetBy = Automatic
+
+	column alt
+		dataType: int64
+		formatString: 0
+		lineageTag: a7d0c262-7068-430c-807c-dfda59155eaa
+		summarizeBy: none
+		sourceColumn: alt
+
+		annotation SummarizationSetBy = Automatic
+
+	partition circuits = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\circuits.csv"),[Delimiter=",", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"circuitId", Int64.Type}, {"circuitRef", type text}, {"name", type text}, {"location", type text}, {"country", type text}, {"lat", type text}, {"lng", type text}, {"alt", Int64.Type}, {"url", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"url"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

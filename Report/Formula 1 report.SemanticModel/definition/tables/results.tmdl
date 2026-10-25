@@ -1,0 +1,171 @@
+table results
+	lineageTag: ce5fbfe0-b77f-4d0d-bf47-b8b4483a6963
+
+	column resultId
+		dataType: int64
+		formatString: 0
+		lineageTag: 7dc6b1e2-fb20-4df4-889b-d0696a6c8af9
+		summarizeBy: count
+		sourceColumn: resultId
+
+		annotation SummarizationSetBy = Automatic
+
+	column raceId
+		dataType: int64
+		formatString: 0
+		lineageTag: 9df2b9d0-f616-4aba-9f67-8e075392ff3c
+		summarizeBy: none
+		sourceColumn: raceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column driverId
+		dataType: int64
+		formatString: 0
+		lineageTag: 92f0d428-c7da-4989-8c4c-f6b648564b21
+		summarizeBy: none
+		sourceColumn: driverId
+
+		annotation SummarizationSetBy = Automatic
+
+	column constructorId
+		dataType: int64
+		formatString: 0
+		lineageTag: b3fcaa4b-fa11-4a88-9ddf-c58f20038476
+		summarizeBy: none
+		sourceColumn: constructorId
+
+		annotation SummarizationSetBy = Automatic
+
+	column number
+		dataType: int64
+		formatString: 0
+		lineageTag: 6aa8810a-33ba-4c4a-85e1-66715944a94b
+		summarizeBy: sum
+		sourceColumn: number
+
+		annotation SummarizationSetBy = Automatic
+
+	column grid
+		dataType: int64
+		formatString: 0
+		lineageTag: 5db358a2-6f16-4f3e-b3f9-2401097f6dbd
+		summarizeBy: sum
+		sourceColumn: grid
+
+		annotation SummarizationSetBy = Automatic
+
+	column position
+		dataType: string
+		lineageTag: dccc31b2-459f-403e-ba9d-17751987f231
+		summarizeBy: none
+		sourceColumn: position
+
+		annotation SummarizationSetBy = Automatic
+
+	column positionText
+		dataType: string
+		lineageTag: 4b2a56bc-e86a-48e1-a9db-5b965d5b316b
+		summarizeBy: none
+		sourceColumn: positionText
+
+		annotation SummarizationSetBy = Automatic
+
+	column positionOrder
+		dataType: int64
+		formatString: 0
+		lineageTag: 1c34bf67-4008-4006-a6f5-d485eb0c560b
+		summarizeBy: sum
+		sourceColumn: positionOrder
+
+		annotation SummarizationSetBy = Automatic
+
+	column points
+		dataType: int64
+		formatString: 0
+		lineageTag: c1ec9761-6d57-45b2-aa38-80bff5446c2f
+		summarizeBy: sum
+		sourceColumn: points
+
+		annotation SummarizationSetBy = Automatic
+
+	column laps
+		dataType: int64
+		formatString: 0
+		lineageTag: f75f5e3e-422c-43a6-ac3e-8f4c6df2b66a
+		summarizeBy: sum
+		sourceColumn: laps
+
+		annotation SummarizationSetBy = Automatic
+
+	column time
+		dataType: string
+		lineageTag: 3a11af36-b035-46ea-8e37-7e1f6b996bc8
+		summarizeBy: none
+		sourceColumn: time
+
+		annotation SummarizationSetBy = Automatic
+
+	column milliseconds
+		dataType: string
+		lineageTag: 73e044c6-b2ab-473b-8ef5-fe51caf1d8e7
+		summarizeBy: none
+		sourceColumn: milliseconds
+
+		annotation SummarizationSetBy = Automatic
+
+	column fastestLap
+		dataType: string
+		lineageTag: f2c9072d-a24e-4e4c-b070-2882b9e161ff
+		summarizeBy: none
+		sourceColumn: fastestLap
+
+		annotation SummarizationSetBy = Automatic
+
+	column rank
+		dataType: string
+		lineageTag: 215f19f8-d226-4c02-8f52-3ff81ecb77e4
+		summarizeBy: none
+		sourceColumn: rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column fastestLapTime
+		dataType: string
+		lineageTag: 7deeeede-ebf7-4fed-912d-9cb42e3abbf4
+		summarizeBy: none
+		sourceColumn: fastestLapTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column fastestLapSpeed
+		dataType: string
+		lineageTag: e06df8f9-195f-4c78-af66-5c758d0831b6
+		summarizeBy: none
+		sourceColumn: fastestLapSpeed
+
+		annotation SummarizationSetBy = Automatic
+
+	column statusId
+		dataType: int64
+		formatString: 0
+		lineageTag: 8bef5736-8ddf-4984-a538-fad16b6508a7
+		summarizeBy: count
+		sourceColumn: statusId
+
+		annotation SummarizationSetBy = Automatic
+
+	partition results = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\results.csv"),[Delimiter=",", Columns=18, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"resultId", Int64.Type}, {"raceId", Int64.Type}, {"driverId", Int64.Type}, {"constructorId", Int64.Type}, {"number", Int64.Type}, {"grid", Int64.Type}, {"position", type text}, {"positionText", type text}, {"positionOrder", Int64.Type}, {"points", Int64.Type}, {"laps", Int64.Type}, {"time", type text}, {"milliseconds", type text}, {"fastestLap", type text}, {"rank", type text}, {"fastestLapTime", type text}, {"fastestLapSpeed", type text}, {"statusId", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,36 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pl-PL
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["circuits","constructor_results","constructor_standings","constructors","driver_standings","drivers","f1_business","qualifying","races","results","constructor_finances_enriched","final_standings","driver_final_standings"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table circuits
+ref table constructor_results
+ref table constructor_standings
+ref table constructors
+ref table driver_standings
+ref table drivers
+ref table DateTableTemplate_dd77fba3-5712-4538-aac6-f6c66074e3e6
+ref table LocalDateTable_2218b8e8-16dd-48e1-bfec-d340a1ae4c71
+ref table f1_business
+ref table qualifying
+ref table races
+ref table LocalDateTable_abb65ee3-351a-40f6-ad49-190c3a94efb9
+ref table results
+ref table constructor_finances_enriched
+ref table 'My Measures'
+ref table final_standings
+ref table dimSeason
+ref table driver_final_standings
+
+ref cultureInfo en-US
+

@@ -1,0 +1,71 @@
+table driver_final_standings
+	lineageTag: 2f0090f6-8ff9-4e86-8b0b-98749a7e3dd0
+
+	column 'races.year'
+		dataType: int64
+		formatString: 0
+		lineageTag: dc4110f6-a2b7-4e15-863b-7465d210cae3
+		summarizeBy: none
+		sourceColumn: races.year
+
+		annotation SummarizationSetBy = Automatic
+
+	column driverId
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c9265e3-02b2-46f6-b193-9c3a7ba51188
+		summarizeBy: none
+		sourceColumn: driverId
+
+		annotation SummarizationSetBy = Automatic
+
+	column points
+		dataType: double
+		lineageTag: 1fb5e3d2-81a2-4121-81c1-8a33703d06ae
+		summarizeBy: sum
+		sourceColumn: points
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column position
+		dataType: int64
+		formatString: 0
+		lineageTag: 5b47e3d0-6cd4-47d3-beba-32a090aa8027
+		summarizeBy: sum
+		sourceColumn: position
+
+		annotation SummarizationSetBy = Automatic
+
+	column wins
+		dataType: int64
+		formatString: 0
+		lineageTag: 5086dcc8-301a-4cde-8073-54058648097b
+		summarizeBy: sum
+		sourceColumn: wins
+
+		annotation SummarizationSetBy = Automatic
+
+	partition driver_final_standings = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\driver_standings.csv"),[Delimiter=",", Columns=7, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"driverStandingsId", Int64.Type}, {"raceId", Int64.Type}, {"driverId", Int64.Type}, {"points", Int64.Type}, {"position", Int64.Type}, {"positionText", type text}, {"wins", Int64.Type}}, "en-US"),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"raceId"}, races, {"raceId"}, "races", JoinKind.Inner),
+				    #"Expanded races" = Table.ExpandTableColumn(#"Merged Queries", "races", {"year", "round"}, {"races.year", "races.round"}),
+				    #"Grouped Rows" = Table.Group(#"Expanded races", {"races.year"}, {{"LastRound", each List.Max([races.round]), type nullable number}, {"Data", each _, type table [driverStandingsId=nullable number, raceId=nullable number, driverId=nullable number, points=nullable number, position=nullable number, positionText=nullable text, wins=nullable number, races.year=nullable number, races.round=nullable number]}}),
+				    #"Expanded Data" = Table.ExpandTableColumn(#"Grouped Rows", "Data", {"driverId", "points", "position", "wins", "races.round"}, {"driverId", "points", "position", "wins", "races.round"}),
+				    #"Added Custom" = Table.AddColumn(#"Expanded Data", "IsFinal", each [races.round] = [LastRound]),
+				    #"Filtered Rows" = Table.SelectRows(#"Added Custom", each ([IsFinal] = true)),
+				    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows",{"LastRound", "races.round", "IsFinal"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Columns",{{"races.year", Int64.Type}, {"driverId", Int64.Type}, {"position", Int64.Type}, {"wins", Int64.Type}, {"points", type number}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

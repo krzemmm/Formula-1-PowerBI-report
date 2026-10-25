@@ -1,0 +1,79 @@
+table constructor_standings
+	lineageTag: 79357c82-bfc5-49c3-8a5d-55619420ab8d
+
+	column constructorStandingsId
+		dataType: int64
+		formatString: 0
+		lineageTag: 70317973-fa9a-426b-9cdb-da6122895498
+		summarizeBy: count
+		sourceColumn: constructorStandingsId
+
+		annotation SummarizationSetBy = Automatic
+
+	column raceId
+		dataType: int64
+		formatString: 0
+		lineageTag: d425c75c-2628-4024-a3ae-f96ec62ed60a
+		summarizeBy: none
+		sourceColumn: raceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column constructorId
+		dataType: int64
+		formatString: 0
+		lineageTag: c2f57cb5-a5e6-40fd-9e3c-79ed91ec44fe
+		summarizeBy: none
+		sourceColumn: constructorId
+
+		annotation SummarizationSetBy = Automatic
+
+	column points
+		dataType: int64
+		formatString: 0
+		lineageTag: 922f0881-73dd-4858-9dc2-b2e1df787d6b
+		summarizeBy: sum
+		sourceColumn: points
+
+		annotation SummarizationSetBy = Automatic
+
+	column position
+		dataType: int64
+		formatString: 0
+		lineageTag: 0d2e8abd-a3b8-4943-8ef7-5f4444a4a0b5
+		summarizeBy: sum
+		sourceColumn: position
+
+		annotation SummarizationSetBy = Automatic
+
+	column positionText
+		dataType: string
+		lineageTag: 04108515-58f6-4aef-af25-e6226c1b4ea6
+		summarizeBy: none
+		sourceColumn: positionText
+
+		annotation SummarizationSetBy = Automatic
+
+	column wins
+		dataType: int64
+		formatString: 0
+		lineageTag: 1e359120-df02-46cb-97f9-5d961b9e8ce4
+		summarizeBy: sum
+		sourceColumn: wins
+
+		annotation SummarizationSetBy = Automatic
+
+	partition constructor_standings = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\constructor_standings.csv"),[Delimiter=",", Columns=7, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"constructorStandingsId", Int64.Type}, {"raceId", Int64.Type}, {"constructorId", Int64.Type}, {"points", Int64.Type}, {"position", Int64.Type}, {"wins", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

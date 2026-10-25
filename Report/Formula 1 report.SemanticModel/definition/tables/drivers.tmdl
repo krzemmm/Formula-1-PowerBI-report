@@ -1,0 +1,97 @@
+table drivers
+	lineageTag: 69216106-28a1-45e2-8f1d-e74cd8219254
+
+	column driverId
+		dataType: int64
+		formatString: 0
+		lineageTag: 20f5cfd1-f273-4f6b-820d-476a814af50d
+		summarizeBy: none
+		sourceColumn: driverId
+
+		annotation SummarizationSetBy = Automatic
+
+	column driverRef
+		dataType: string
+		lineageTag: 59c19e91-f9fb-4655-9b64-678f7548fc19
+		summarizeBy: none
+		sourceColumn: driverRef
+
+		annotation SummarizationSetBy = Automatic
+
+	column number
+		dataType: string
+		lineageTag: 35917153-5ae9-4ee9-a00a-bcc644f90c3c
+		summarizeBy: none
+		sourceColumn: number
+
+		annotation SummarizationSetBy = Automatic
+
+	column code
+		dataType: string
+		lineageTag: 3809eb1d-b390-403b-a2aa-e2e841abd072
+		summarizeBy: none
+		sourceColumn: code
+
+		annotation SummarizationSetBy = Automatic
+
+	column forename
+		dataType: string
+		lineageTag: 6c3fecbb-ded6-44ef-8dfd-b76faecf671c
+		summarizeBy: none
+		sourceColumn: forename
+
+		annotation SummarizationSetBy = Automatic
+
+	column surname
+		dataType: string
+		lineageTag: 60fe3765-b94a-46aa-9ef7-758d52f97e6c
+		summarizeBy: none
+		sourceColumn: surname
+
+		annotation SummarizationSetBy = Automatic
+
+	column dob
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ca831490-a9de-4481-a9f0-df6637c53986
+		summarizeBy: none
+		sourceColumn: dob
+
+		variation Variation
+			isDefault
+			relationship: 887854c7-a738-4798-835c-938243153eae
+			defaultHierarchy: LocalDateTable_2218b8e8-16dd-48e1-bfec-d340a1ae4c71.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column nationality
+		dataType: string
+		lineageTag: 89dcd65a-d562-432f-aa0e-2472a18e15bf
+		summarizeBy: none
+		sourceColumn: nationality
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Driver Name' = drivers[forename] & " " & drivers[surname]
+		lineageTag: 0dced153-decd-4f2f-9d91-8c15438df759
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition drivers = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\drivers.csv"),[Delimiter=",", Columns=9, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"driverId", Int64.Type}, {"driverRef", type text}, {"number", type text}, {"code", type text}, {"forename", type text}, {"surname", type text}, {"dob", type date}, {"nationality", type text}, {"url", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"url"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

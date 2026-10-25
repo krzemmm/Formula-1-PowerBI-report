@@ -1,0 +1,154 @@
+table constructor_finances_enriched
+	lineageTag: 0497bd79-4f9b-48b3-a2e2-5f64d8c0b2ad
+
+	measure 'Constructor Points' = SUM('constructor_finances_enriched'[constructor_points_final])
+		formatString: 0
+		lineageTag: a540c75a-b30b-4fa9-a6de-88ac65ac1725
+
+	measure 'Operating Budget' = SUM('constructor_finances_enriched'[operating_budget_usd_m])
+		lineageTag: 1bd5d102-992e-4123-ba18-7665c383dbfb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Points per $m' = DIVIDE([Constructor Points], [Operating Budget])
+		lineageTag: 23a7f118-04cb-44f9-b326-c410d5fc36f7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column season
+		dataType: int64
+		formatString: 0
+		lineageTag: ee5a169b-91a7-4d02-a979-cd2d912bd549
+		summarizeBy: none
+		sourceColumn: season
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_name
+		dataType: string
+		lineageTag: 8a3e073e-c7ed-485d-b5e8-162219be7054
+		summarizeBy: none
+		sourceColumn: team_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column country_iso3
+		dataType: string
+		lineageTag: b422706c-1aa7-402a-94ab-0c8cfc911131
+		summarizeBy: none
+		sourceColumn: country_iso3
+
+		annotation SummarizationSetBy = Automatic
+
+	column operating_budget_usd_m
+		dataType: double
+		lineageTag: e26a8ef2-c0d8-47a6-bb27-4739e2b697dd
+		summarizeBy: sum
+		sourceColumn: operating_budget_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sponsorship_revenue_usd_m
+		dataType: double
+		lineageTag: de29e57a-69dc-4a40-994e-1dcbe31e439d
+		summarizeBy: sum
+		sourceColumn: sponsorship_revenue_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column prize_money_usd_m
+		dataType: double
+		lineageTag: 53f348ca-8d90-47de-add5-ac7ef53c920c
+		summarizeBy: sum
+		sourceColumn: prize_money_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_revenue_usd_m
+		dataType: double
+		lineageTag: d94e8c5f-3d72-43eb-81a7-42fa3449972e
+		summarizeBy: sum
+		sourceColumn: total_revenue_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column in_cost_cap_era
+		dataType: string
+		lineageTag: e6240fd8-576a-4a37-ada9-9ac93112c376
+		summarizeBy: none
+		sourceColumn: in_cost_cap_era
+
+		annotation SummarizationSetBy = Automatic
+
+	column cost_cap_limit_usd_m
+		dataType: string
+		lineageTag: ada2a166-9032-4bec-83af-be8dace0c1db
+		summarizeBy: none
+		sourceColumn: cost_cap_limit_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+	column constructor_points_final
+		dataType: int64
+		formatString: 0
+		lineageTag: d84ec876-6134-420a-add2-99b84a6922fd
+		summarizeBy: sum
+		sourceColumn: constructor_points_final
+
+		annotation SummarizationSetBy = Automatic
+
+	column constructor_position_final
+		dataType: string
+		lineageTag: 222c003d-45eb-4bfe-888b-538722cad280
+		summarizeBy: none
+		sourceColumn: constructor_position_final
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_constructors_champion
+		dataType: string
+		lineageTag: ee5d843a-a4b5-4059-b2fd-158f5d71b4a5
+		summarizeBy: none
+		sourceColumn: is_constructors_champion
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_driver_champion
+		dataType: string
+		lineageTag: 36c3a116-3cc2-4209-b6ae-937016772412
+		summarizeBy: none
+		sourceColumn: is_driver_champion
+
+		annotation SummarizationSetBy = Automatic
+
+	column driver_champion_name
+		dataType: string
+		lineageTag: 6e4d661c-926d-40ca-8e9f-9fd57401332f
+		summarizeBy: none
+		sourceColumn: driver_champion_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition constructor_finances_enriched = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\constructor_finances_enriched.csv"),[Delimiter=",", Columns=14, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Replaced Value" = Table.ReplaceValue(#"Promoted Headers",".",",",Replacer.ReplaceText,{"operating_budget_usd_m", "sponsorship_revenue_usd_m", "prize_money_usd_m", "total_revenue_usd_m", "cost_cap_limit_usd_m", "constructor_points_final"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Replaced Value",{{"operating_budget_usd_m", type number}, {"sponsorship_revenue_usd_m", type number}, {"prize_money_usd_m", type number}, {"total_revenue_usd_m", type number}, {"cost_cap_limit_usd_m", type text}, {"constructor_points_final", Int64.Type}, {"season", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

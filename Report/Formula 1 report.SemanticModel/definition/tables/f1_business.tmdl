@@ -1,0 +1,117 @@
+table f1_business
+	lineageTag: d55b8d7a-8e2b-45a9-8606-69ea091991dd
+
+	column season
+		dataType: int64
+		formatString: 0
+		lineageTag: f2079083-e38e-4e17-87aa-52540181a7af
+		summarizeBy: none
+		sourceColumn: season
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_revenue_usd_m
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c908b60-7396-4744-8f11-1e2b7763ebd5
+		summarizeBy: sum
+		sourceColumn: total_revenue_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column race_promotion_fees_usd_m
+		dataType: double
+		lineageTag: 4e20121a-48b6-48cf-bf2c-76df181dc2ca
+		summarizeBy: sum
+		sourceColumn: race_promotion_fees_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column broadcast_media_usd_m
+		dataType: double
+		lineageTag: ce2066af-31e5-4739-9f55-038756a6fef0
+		summarizeBy: sum
+		sourceColumn: broadcast_media_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sponsorship_usd_m
+		dataType: double
+		lineageTag: 819f98a7-7ae0-4fca-80b7-550d2660f466
+		summarizeBy: sum
+		sourceColumn: sponsorship_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column other_revenue_usd_m
+		dataType: double
+		lineageTag: 3b223e37-2ace-497a-aaa7-c063042eed7b
+		summarizeBy: sum
+		sourceColumn: other_revenue_usd_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column is_liberty_media_era
+		dataType: int64
+		formatString: 0
+		lineageTag: e1a7ceb0-2fe2-4bd0-8381-8bd0ebe015cd
+		summarizeBy: sum
+		sourceColumn: is_liberty_media_era
+
+		annotation SummarizationSetBy = Automatic
+
+	column drive_to_survive_viewers_m_est
+		dataType: int64
+		formatString: 0
+		lineageTag: 468b78f8-93ed-4b08-a7a7-48389b808b32
+		summarizeBy: sum
+		sourceColumn: drive_to_survive_viewers_m_est
+
+		annotation SummarizationSetBy = Automatic
+
+	column us_avg_race_viewers_m
+		dataType: double
+		lineageTag: 7e2578d1-0142-4d2f-9880-54fa52ad3538
+		summarizeBy: sum
+		sourceColumn: us_avg_race_viewers_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column global_avg_race_viewers_m
+		dataType: double
+		lineageTag: 470138fd-7008-4f5b-bdcc-87c8fb835051
+		summarizeBy: sum
+		sourceColumn: global_avg_race_viewers_m
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition f1_business = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\f1_business.csv"),[Delimiter=",", Columns=10, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"season", Int64.Type}, {"total_revenue_usd_m", type text}, {"race_promotion_fees_usd_m", type text}, {"broadcast_media_usd_m", type text}, {"sponsorship_usd_m", type text}, {"other_revenue_usd_m", type text}, {"is_liberty_media_era", Int64.Type}, {"drive_to_survive_viewers_m_est", Int64.Type}, {"us_avg_race_viewers_m", type text}, {"global_avg_race_viewers_m", type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type",".",",",Replacer.ReplaceText,{"total_revenue_usd_m", "race_promotion_fees_usd_m", "broadcast_media_usd_m", "sponsorship_usd_m", "other_revenue_usd_m", "us_avg_race_viewers_m", "global_avg_race_viewers_m"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Replaced Value",{{"total_revenue_usd_m", Int64.Type}, {"race_promotion_fees_usd_m", type number}, {"broadcast_media_usd_m", type number}, {"sponsorship_usd_m", type number}, {"other_revenue_usd_m", type number}, {"us_avg_race_viewers_m", type number}, {"global_avg_race_viewers_m", type number}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

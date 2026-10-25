@@ -1,0 +1,61 @@
+table constructor_results
+	lineageTag: 3263af9a-dea6-4605-805b-7b704f67db5f
+
+	column constructorResultsId
+		dataType: int64
+		formatString: 0
+		lineageTag: a4bd0960-17b9-4242-af27-1588afc4bd03
+		summarizeBy: count
+		sourceColumn: constructorResultsId
+
+		annotation SummarizationSetBy = Automatic
+
+	column raceId
+		dataType: int64
+		formatString: 0
+		lineageTag: df3dbd02-97dc-4577-abc7-4a186e672139
+		summarizeBy: none
+		sourceColumn: raceId
+
+		annotation SummarizationSetBy = Automatic
+
+	column constructorId
+		dataType: int64
+		formatString: 0
+		lineageTag: 9188a063-3759-477c-85dc-26b92ba55c49
+		summarizeBy: none
+		sourceColumn: constructorId
+
+		annotation SummarizationSetBy = Automatic
+
+	column points
+		dataType: int64
+		formatString: 0
+		lineageTag: a53cb136-1d34-4519-a5be-fbe763505fa8
+		summarizeBy: sum
+		sourceColumn: points
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 94a61a1c-f582-4367-9bcf-34989aac8165
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition constructor_results = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\Kacper\Desktop\F1_data\constructor_results.csv"),[Delimiter=",", Columns=5, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"constructorResultsId", Int64.Type}, {"raceId", Int64.Type}, {"constructorId", Int64.Type}, {"points", Int64.Type}, {"status", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

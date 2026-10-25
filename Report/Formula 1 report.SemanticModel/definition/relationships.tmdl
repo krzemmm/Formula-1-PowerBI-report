@@ -1,0 +1,96 @@
+relationship AutoDetected_59d1bd25-c35b-4b08-b945-216e92c07ea2
+	fromColumn: constructor_results.constructorId
+	toColumn: constructors.constructorId
+
+relationship AutoDetected_95764b7a-c3ff-4ea5-955a-93250f6bd742
+	fromColumn: constructor_standings.constructorId
+	toColumn: constructors.constructorId
+
+relationship 887854c7-a738-4798-835c-938243153eae
+	joinOnDateBehavior: datePartOnly
+	fromColumn: drivers.dob
+	toColumn: LocalDateTable_2218b8e8-16dd-48e1-bfec-d340a1ae4c71.Date
+
+relationship AutoDetected_d400984c-90a8-46af-90a7-dfa7fea4841d
+	fromColumn: driver_standings.driverId
+	toColumn: drivers.driverId
+
+relationship AutoDetected_ecc6a0e5-d486-41ef-9d5c-98903c9ea673
+	fromColumn: qualifying.constructorId
+	toColumn: constructors.constructorId
+
+relationship AutoDetected_db986dc3-4144-4b22-a642-f4324e15dd32
+	fromColumn: qualifying.driverId
+	toColumn: drivers.driverId
+
+relationship b6c22f76-3295-437e-832f-98da8c69b648
+	joinOnDateBehavior: datePartOnly
+	fromColumn: races.date
+	toColumn: LocalDateTable_abb65ee3-351a-40f6-ad49-190c3a94efb9.Date
+
+relationship AutoDetected_0cbaecf8-a798-42b1-96f7-a958f7522d01
+	fromColumn: races.circuitId
+	toColumn: circuits.circuitId
+
+relationship AutoDetected_1bd2c524-5936-4e8d-b8de-db46a9aa9906
+	fromColumn: constructor_results.raceId
+	toColumn: races.raceId
+
+relationship AutoDetected_efa705a0-31c0-45df-9e7f-9631405ac1fc
+	fromColumn: constructor_standings.raceId
+	toColumn: races.raceId
+
+relationship AutoDetected_db048cb5-0394-4ef6-8a29-03f6fcbe3fc5
+	fromColumn: driver_standings.raceId
+	toColumn: races.raceId
+
+relationship AutoDetected_dec1e1f0-3555-4e30-b891-917582d88e08
+	fromColumn: qualifying.raceId
+	toColumn: races.raceId
+
+relationship AutoDetected_07668250-9d85-4ff5-9f58-6830227c4e82
+	fromColumn: results.raceId
+	toColumn: races.raceId
+
+relationship AutoDetected_23ed5f75-baa4-413e-9a1b-ef67fbc04dbb
+	fromColumn: results.constructorId
+	toColumn: constructors.constructorId
+
+relationship AutoDetected_8c2d91c3-0b63-48ba-96bc-3a05b40339e7
+	fromColumn: results.driverId
+	toColumn: drivers.driverId
+
+relationship AutoDetected_a6b89dfa-72d3-497d-b9cc-e6f416b445ce
+	fromColumn: constructor_finances_enriched.season
+	toColumn: f1_business.season
+
+relationship d57b6062-5fb8-32c6-ffee-dbacc26e3fff
+	fromColumn: final_standings.constructorId
+	toColumn: constructors.constructorId
+
+relationship f0f11f71-aaf5-951f-76ce-b591458bc3dd
+	fromColumn: races.year
+	toColumn: dimSeason.Year
+
+relationship d8729091-fa40-7718-1ae6-eff1a56bf081
+	fromColumn: final_standings.year
+	toColumn: dimSeason.Year
+
+relationship e5fc2a18-c811-c694-55c8-8e6b348c0911
+	crossFilteringBehavior: bothDirections
+	fromColumn: f1_business.season
+	toColumn: dimSeason.Year
+
+relationship a099b18a-2221-80b8-4c9a-c7a13c57168f
+	isActive: false
+	fromColumn: constructor_finances_enriched.season
+	toColumn: dimSeason.Year
+
+relationship AutoDetected_080dca09-2d61-4b01-a251-104962d11ac4
+	fromColumn: driver_final_standings.driverId
+	toColumn: drivers.driverId
+
+relationship f2bde7ab-70a0-4325-3712-ce85f8ac2687
+	fromColumn: driver_final_standings.'races.year'
+	toColumn: dimSeason.Year
+
