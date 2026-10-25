@@ -6,7 +6,7 @@
 
 ## The questions this report answers
 
-- Which teams actually dominated their era — and how do you compare a 1958 champion with a 2023 one when the points system changed six times in between?
+- Which teams actually dominated F1?
 - What did Liberty Media and *Drive to Survive* really do to Formula 1's revenue, and to its audience?
 - Does a bigger budget buy a championship?
 - What does a full career look like season by season — the title years, the lean ones, and how often the car simply failed to finish?
@@ -35,7 +35,7 @@
 
 | Source | Contents | Link |
 |---|---|---|
-| Formula 1 World Championship (1950–2024) | races, results, qualifying, lap times, pit stops, standings, drivers, constructors, circuits | [KAGGLE_LINK_1](https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020) |
-| F1 business & constructor finances (2010–2026) | revenue structure, team budgets, sponsorship, prize money, cost-cap limits, audience figures | [KAGGLE_LINK_2](https://www.kaggle.com/datasets/sergionefedov/formula-1-racing-industry-2010-2026) |
+| Formula 1 World Championship (1950–2024) | races, results, qualifying, lap times, pit stops, standings, drivers, constructors, circuits | [KAGGLE F1 1950-2020](https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2020) |
+| F1 business & constructor finances (2010–2026) | revenue structure, team budgets, sponsorship, prize money, cost-cap limits, audience figures | [KAGGLE F1 INDUSTRY 2010-2026](https://www.kaggle.com/datasets/sergionefedov/formula-1-racing-industry-2010-2026) |
 
 The raw CSV files are **not** committed to this repository — download them from the links above and point the Power Query sources at your local folder.
